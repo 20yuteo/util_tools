@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
-import { RepositoryProvider } from "~/adapter/repositories/provider";
 
 export function meta({}: Route.MetaArgs) {
   return [

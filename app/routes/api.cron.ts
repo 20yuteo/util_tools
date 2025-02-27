@@ -10,8 +10,10 @@ export async function loader() {
     await tweetRepository.postTweet(content);
 
     await slackRepository.postMessage('Success: ' + content);
+    console.log('Success: ' + content);
   } catch (error) {
     await slackRepository.postMessage('Error: ' + error);
+    console.error(error);
   }
 
   return Response.json({ message: "Hello from API" });
