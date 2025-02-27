@@ -10,10 +10,19 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader() {
-  const llmRepository = new RepositoryProvider().llm;
-  const tweetRepository = new RepositoryProvider().tweet;
-  const content = await llmRepository.generateContent('who are you?');
-  await tweetRepository.postTweet(content);
+  const slackRepository = new RepositoryProvider().slack;
+  try {
+    const llmRepository = new RepositoryProvider().llm;
+    const tweetRepository = new RepositoryProvider().tweet;
+    const content = await llmRepository.generateContent('who are you?');
+    await tweetRepository.postTweet(content);
+
+    await slackRepository.postMessage('Success: ' + content);
+  } catch (error) {
+    await slackRepository.postMessage('Error: ' + error);
+  }
+
+
 }
 
 export default function Home() {
