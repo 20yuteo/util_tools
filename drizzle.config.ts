@@ -11,5 +11,5 @@ export default {
 		user: "postgres",
 		password: "postgres",
 		ssl: false,
-	}
+	},
 } satisfies Config;

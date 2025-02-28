@@ -10,11 +10,10 @@ export async function loader() {
 		const content = await llmRepository.generateContent("who are you?");
 		await tweetRepository.postTweet(content);
 
-		await slackRepository.postMessage("Success: " + content);
-		console.log("Success: " + content);
-
+		await slackRepository.postMessage(`Success: ${content}`);
+		console.log(`Success: ${content}`);
 	} catch (error) {
-		await slackRepository.postMessage("Error: " + error);
+		await slackRepository.postMessage(`Error: ${error}`);
 		console.error(error);
 	}
 
