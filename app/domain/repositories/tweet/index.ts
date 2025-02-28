@@ -1,3 +1,3 @@
 export interface TweetRepository {
-  postTweet: (text: string) => Promise<void>;
+	postTweet: (text: string) => Promise<void>;
 }

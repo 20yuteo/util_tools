@@ -1,3 +1,3 @@
 export interface SlackRepository {
-  postMessage: (text: string) => Promise<void>;
+	postMessage: (text: string) => Promise<void>;
 }

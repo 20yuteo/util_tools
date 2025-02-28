@@ -1,3 +1,3 @@
 export interface LLMRepository {
-  generateContent: (text: string) => Promise<string>;
+	generateContent: (text: string) => Promise<string>;
 }

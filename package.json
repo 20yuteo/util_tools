@@ -1,38 +1,51 @@
 {
-  "name": "util-tools",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "react-router build",
-    "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
-  },
-  "dependencies": {
-    "@google/generative-ai": "^0.22.0",
-    "@react-router/node": "^7.2.0",
-    "@react-router/serve": "^7.2.0",
-    "@remix-run/node": "^2.15.3",
-    "@slack/web-api": "^7.8.0",
-    "crypto": "^1.0.1",
-    "crypto-js": "^4.2.0",
-    "isbot": "^5.1.17",
-    "oauth-1.0a": "^2.2.6",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router": "^7.2.0"
-  },
-  "devDependencies": {
-    "@react-router/dev": "^7.2.0",
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/crypto-js": "^4.2.2",
-    "@types/node": "^20",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.1",
-    "react-router-devtools": "^1.1.0",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.2",
-    "vite": "^5.4.11",
-    "vite-tsconfig-paths": "^5.1.4"
-  }
+	"name": "util-tools",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "react-router build",
+		"dev": "react-router dev",
+		"start": "react-router-serve ./build/server/index.js",
+		"typecheck": "react-router typegen && tsc",
+		"sql": "drizzle-kit generate",
+		"drop": "drizzle-kit drop",
+		"migrate": "drizzle-kit push",
+		"lint": "biome lint --write",
+		"format": "biome format --write",
+		"check": "biome check --write"
+	},
+	"dependencies": {
+		"@google/generative-ai": "^0.22.0",
+		"@react-router/node": "^7.2.0",
+		"@react-router/serve": "^7.2.0",
+		"@remix-run/node": "^2.15.3",
+		"@slack/web-api": "^7.8.0",
+		"@supabase/supabase-js": "^2.49.1",
+		"crypto": "^1.0.1",
+		"crypto-js": "^4.2.0",
+		"drizzle-orm": "^0.40.0",
+		"isbot": "^5.1.17",
+		"oauth-1.0a": "^2.2.6",
+		"pg": "^8.13.3",
+		"postgres": "^3.4.5",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-router": "^7.2.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@react-router/dev": "^7.2.0",
+		"@tailwindcss/vite": "^4.0.0",
+		"@types/crypto-js": "^4.2.2",
+		"@types/node": "^20",
+		"@types/pg": "^8.11.11",
+		"@types/react": "^19.0.1",
+		"@types/react-dom": "^19.0.1",
+		"drizzle-kit": "^0.30.5",
+		"react-router-devtools": "^1.1.0",
+		"tailwindcss": "^4.0.0",
+		"typescript": "^5.7.2",
+		"vite": "^5.4.11",
+		"vite-tsconfig-paths": "^5.1.4"
+	}
 }
