@@ -95,7 +95,7 @@ export class IndieHackersRepositoryImpl implements IndieHackersRepository {
             reject(error);
           }
         }
-      }, 1000);
+      }, 5000);
     });
   }
 }
