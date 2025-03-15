@@ -7,3 +7,5 @@
 
 .env
 /data/
+/dist/
+/infra/modules/lambda/lambda_function.zip

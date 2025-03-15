@@ -18,34 +18,43 @@ export interface HackerNewsItem {
 
 export class IndieHackersRepositoryImpl implements IndieHackersRepository {
   async getPosts() {
-      try {
-          const res = await fetch("https://hacker-news.firebaseio.com/v0/newstories.json");
+    try {
+      const res = await fetch(
+        "https://hacker-news.firebaseio.com/v0/newstories.json"
+      );
 
-          if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res.status}`);
-          }
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
-          const newStories = await res.json();
+      const newStories = await res.json();
 
-          let target: HackerNewsItem | undefined;
+      let target: HackerNewsItem | undefined;
 
-          for (const itemId of newStories) {
-              const mediaList = await dbClient.select().from(medias).where(eq(medias.extId, itemId));
+      for (const itemId of newStories) {
+        const mediaList = await dbClient
+          .select()
+          .from(medias)
+          .where(eq(medias.extId, itemId));
 
-              if (mediaList.length > 0) {
-                continue;
-              }
+        if (mediaList.length > 0) {
+          continue;
+        }
 
-              const itemRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${itemId}.json?print=pretty`);
+        const itemRes = await fetch(
+          `https://hacker-news.firebaseio.com/v0/item/${itemId}.json?print=pretty`
+        );
 
-              if (!itemRes.ok) {
-                  console.warn(`アイテム取得失敗: ${itemId}, ステータス: ${itemRes.status}`); // 警告を出力
-                  continue;
-              }
+        if (!itemRes.ok) {
+          console.warn(
+            `アイテム取得失敗: ${itemId}, ステータス: ${itemRes.status}`
+          ); // 警告を出力
+          continue;
+        }
 
-              const itemJson: HackerNewsItem = await itemRes.json();
+        const itemJson: HackerNewsItem = await itemRes.json();
 
-              const prompt = `
+        const prompt = `
               以下のtitleかtextの内容が「ai, tech, indie hack, generative ai, small bussiness」のいずれかに該当するかどうかを、以下の形式でjsonを出力してください。
               title: ${itemJson.title}
               text: ${itemJson.text}
@@ -54,30 +63,33 @@ export class IndieHackersRepositoryImpl implements IndieHackersRepository {
               }
               `;
 
-              const result = await this.callLLM(prompt);
-              const trimmed = result.replace(/```json\n|\n```/g, '');
-              try {
-                  const resultJson = JSON.parse(trimmed);
-                  if (resultJson.result) {
-                      target = itemJson;
-                      break;
-                  }
-              } catch (parseError) {
-                  console.error(`LLMレスポンスのパースエラー: ${trimmed}`, parseError);
-                  continue;
-              }
+        const result = await this.callLLM(prompt);
+        const trimmed = result.replace(/```json\n|\n```/g, "");
+        try {
+          const resultJson = JSON.parse(trimmed);
+          if (resultJson.result) {
+            target = itemJson;
+            break;
           }
-          
-          await dbClient.insert(medias).values({
-              extId: target?.id || "",
-              url: target?.url || "",
-          }).returning();
-
-          return target;
-      } catch (error) {
-          console.error("データ取得エラー:", error);
-          throw error;
+        } catch (parseError) {
+          console.error(`LLMレスポンスのパースエラー: ${trimmed}`, parseError);
+          continue;
+        }
       }
+
+      await dbClient
+        .insert(medias)
+        .values({
+          extId: target?.id || "",
+          url: target?.url || "",
+        })
+        .returning();
+
+      return target;
+    } catch (error) {
+      console.error("データ取得エラー:", error);
+      throw error;
+    }
   }
 
   private async callLLM(prompt: string): Promise<string> {
